@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>LEGO Build Adventure</title>
+    
+    <!-- PWA & Mobile Settings -->
+    <link rel="manifest" href="/assets/manifest-q5qKqZEQ.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LegoBuild">
+    <meta name="theme-color" content="#FFCC00">
+
+    <!-- Kid-friendly rounded font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              lego: {
+                red: '#D11013',
+                yellow: '#FFCC00',
+                blue: '#0055BF',
+                green: '#237841',
+                darkGreen: '#184F2B',
+                orange: '#FF851B',
+                purple: '#B10DC9',
+                white: '#FFFFFF',
+                black: '#111111',
+                sky: '#6CCFF6',
+              }
+            },
+            fontFamily: {
+              sans: ['Fredoka', 'Comic Sans MS', 'Chalkboard SE', 'sans-serif'],
+            },
+            animation: {
+              'bounce-slow': 'bounce 3s infinite',
+              'wiggle': 'wiggle 3s ease-in-out infinite',
+              'pop': 'pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+              'float': 'float 6s ease-in-out infinite',
+              'spin-slow': 'spin 12s linear infinite',
+              'shimmer': 'shimmer 3s infinite',
+              'breathe': 'breathe 4s ease-in-out infinite',
+            },
+            keyframes: {
+              wiggle: {
+                '0%, 100%': { transform: 'rotate(-3deg)' },
+                '50%': { transform: 'rotate(3deg)' },
+              },
+              pop: {
+                '0%': { transform: 'scale(0.5)', opacity: '0' },
+                '100%': { transform: 'scale(1)', opacity: '1' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-15px)' },
+              },
+              shimmer: {
+                '0%': { left: '-100%', opacity: '0' },
+                '10%': { opacity: '0.3' },
+                '50%': { left: '200%', opacity: '0' },
+                '100%': { left: '200%', opacity: '0' },
+              },
+              breathe: {
+                '0%, 100%': { transform: 'scale(1)' },
+                '50%': { transform: 'scale(1.03)' },
+              }
+            },
+            boxShadow: {
+              'toy': '0 6px 0 rgba(0,0,0,0.15)',
+              'toy-active': '0 2px 0 rgba(0,0,0,0.15)',
+              'toy-lg': '0 10px 0 rgba(0,0,0,0.15)',
+              'toy-xl': '0 14px 0 rgba(0,0,0,0.15)',
+              'card': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+              'glow': '0 0 20px rgba(255, 255, 255, 0.6)',
+              'inner-light': 'inset 0 4px 6px rgba(255,255,255,0.4)',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Hide scrollbar for cleaner UI */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      body {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        overflow: hidden; /* Prevent scrolling on iPad */
+        background-color: #FEF3C7; /* warm yellow bg */
+        font-family: 'Fredoka', sans-serif;
+      }
+      
+      /* Landscape enforcement */
+      #portrait-warning {
+        display: none;
+      }
+      
+      @media (orientation: portrait) {
+        #portrait-warning {
+          display: flex;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: #FFCC00;
+          z-index: 9999;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 2rem;
+        }
+        #root {
+          display: none;
+        }
+      }
+    </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.25.0",
+    "canvas-confetti": "https://esm.sh/canvas-confetti@^1.9.4",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-DKCfZKai.js"></script>
+</head>
+  <body>
+    <div id="portrait-warning">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        <path d="M19 3v4"></path>
+        <path d="M21 5h-4"></path>
+      </svg>
+      <h1 style="font-size: 2rem; font-weight: bold; color: #D11013; font-family: 'Comic Sans MS', sans-serif;">Please Turn Your iPad</h1>
+      <p style="font-size: 1.5rem; color: #111111; font-family: 'Comic Sans MS', sans-serif;">This game works best sideways!</p>
+    </div>
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    </script>
+</body>
+</html>
