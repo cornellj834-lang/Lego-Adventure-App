@@ -1,3 +1,4 @@
+# netlify.toml — minimal static site config
+
 [build]
-  command = "npm run build"
-  publish = "dist"
+  publish = "."
