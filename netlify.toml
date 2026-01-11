@@ -1,4 +1,1 @@
-# netlify.toml — minimal static site config
 
-[build]
-  publish = "."
