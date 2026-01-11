@@ -3,7 +3,7 @@
   "short_name": "LegoBuild",
   "start_url": ".",
   "display": "standalone",
-  "orientation": "landscape",
+  "orientation": "any",
   "background_color": "#FEF3C7",
   "theme_color": "#FFCC00"
 }
