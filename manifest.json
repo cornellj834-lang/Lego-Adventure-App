@@ -1,0 +1,9 @@
+{
+  "name": "LEGO Build Adventure",
+  "short_name": "LegoBuild",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#FEF3C7",
+  "theme_color": "#FFCC00"
+}

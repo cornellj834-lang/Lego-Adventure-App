@@ -6,7 +6,7 @@
     <title>LEGO Build Adventure</title>
     
     <!-- PWA & Mobile Settings -->
-    <link rel="manifest" href="/assets/manifest-q5qKqZEQ.json">
+    <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="LegoBuild">
@@ -125,8 +125,6 @@
         }
       }
     </style>
-
-<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -140,7 +138,7 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-DKCfZKai.js"></script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="portrait-warning">
@@ -153,6 +151,8 @@
       <p style="font-size: 1.5rem; color: #111111; font-family: 'Comic Sans MS', sans-serif;">This game works best sideways!</p>
     </div>
     <div id="root"></div>
+    <!-- Explicitly load the application module -->
+    <script type="module" src="./index.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -164,5 +164,6 @@
         });
       }
     </script>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
