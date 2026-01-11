@@ -1,30 +1,33 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
+import { createRoot } from 'react-dom/client';
+import App from './App';
 
-console.log("LEGO Build Adventure: Initializing application...");
+console.log("LEGO: Script execution started...");
 
-const rootElement = document.getElementById('root');
+const mountApp = () => {
+  const container = document.getElementById('root');
+  if (!container) {
+    console.error("LEGO: Could not find root element.");
+    return;
+  }
 
-if (!rootElement) {
-  console.error("LEGO Build Adventure: CRITICAL ERROR - Mount point '#root' not found in DOM.");
-} else {
   try {
-    const root = ReactDOM.createRoot(rootElement);
+    const root = createRoot(container);
     root.render(
       <React.StrictMode>
         <App />
       </React.StrictMode>
     );
-    console.log("LEGO Build Adventure: React mount triggered successfully.");
+    console.log("LEGO: Successfully mounted App.");
   } catch (error) {
-    console.error("LEGO Build Adventure: React mount failed:", error);
-    rootElement.innerHTML = `
-      <div style="padding: 40px; text-align: center; color: #D11013; font-family: 'Fredoka', sans-serif; background: #FEF3C7; height: 100vh;">
-        <h1 style="font-size: 2rem;">Oh No!</h1>
-        <p style="font-size: 1.2rem;">The LEGO blocks are stuck. Please try refreshing!</p>
-        <button onclick="window.location.reload()" style="padding: 10px 20px; background: #0055BF; color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 20px; cursor: pointer;">Refresh Page</button>
-      </div>
-    `;
+    console.error("LEGO: Error during mounting:", error);
+    container.innerHTML = `<div style="padding:20px; text-align:center;"><h1>LEGO Error</h1><p>${error}</p></div>`;
   }
+};
+
+// Start mounting
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mountApp);
+} else {
+  mountApp();
 }

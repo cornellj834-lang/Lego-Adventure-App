@@ -5,45 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>LEGO Build Adventure</title>
     
-    <!-- PWA & Mobile Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="LegoBuild">
     <meta name="theme-color" content="#FFCC00">
 
-    <!-- Pre-load Shim for Browser Environments -->
     <script>
-      // Forcefully unregister any stuck service workers from previous versions
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for(let registration of registrations) {
-            registration.unregister();
-            console.log('LEGO: Unregistered old service worker');
-          }
-        }).catch(function(err) {
-          console.error('LEGO: Service worker unregistration failed: ', err);
-        });
-      }
-
-      // Robust process shim for libraries that expect a Node-like environment
+      // Global shim for environments expecting 'process'
       window.process = { 
         env: { NODE_ENV: 'production' },
-        cwd: function() { return '/'; },
-        nextTick: function(fn) { setTimeout(fn, 0); }
-      };
-      
-      // Global error logger
-      window.onerror = function(msg, url, lineNo, columnNo, error) {
-        console.error('LEGO Critical Error:', msg, url, lineNo);
-        const root = document.getElementById('root');
-        if (root && root.innerHTML === '') {
-           root.innerHTML = '<div style="background:#FFCC00; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:sans-serif; text-align:center; padding:20px;"><h1>LEGO Blocks Stuck!</h1><p>Something went wrong during loading. Please refresh.</p><button onclick="location.reload()" style="padding:10px 20px; background:white; border-radius:10px; border:none; font-weight:bold; margin-top:20px;">Try Again</button></div>';
-        }
-        return false;
+        cwd: () => '/',
+        nextTick: (fn) => setTimeout(fn, 0)
       };
     </script>
 
-    <!-- Kid-friendly rounded font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -55,53 +30,24 @@
           extend: {
             colors: {
               lego: {
-                red: '#D11013',
-                yellow: '#FFCC00',
-                blue: '#0055BF',
-                green: '#237841',
-                darkGreen: '#184F2B',
-                orange: '#FF851B',
-                purple: '#B10DC9',
-                white: '#FFFFFF',
-                black: '#111111',
-                sky: '#6CCFF6',
+                red: '#D11013', yellow: '#FFCC00', blue: '#0055BF',
+                green: '#237841', darkGreen: '#184F2B', orange: '#FF851B',
+                purple: '#B10DC9', white: '#FFFFFF', black: '#111111', sky: '#6CCFF6',
               }
             },
-            fontFamily: {
-              sans: ['Fredoka', 'Comic Sans MS', 'Chalkboard SE', 'sans-serif'],
-            },
+            fontFamily: { sans: ['Fredoka', 'sans-serif'] },
             animation: {
               'bounce-slow': 'bounce 3s infinite',
               'wiggle': 'wiggle 3s ease-in-out infinite',
               'pop': 'pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
               'float': 'float 6s ease-in-out infinite',
-              'spin-slow': 'spin 12s linear infinite',
               'shimmer': 'shimmer 3s infinite',
-              'breathe': 'breathe 4s ease-in-out infinite',
             },
             keyframes: {
-              wiggle: {
-                '0%, 100%': { transform: 'rotate(-3deg)' },
-                '50%': { transform: 'rotate(3deg)' },
-              },
-              pop: {
-                '0%': { transform: 'scale(0.5)', opacity: '0' },
-                '100%': { transform: 'scale(1)', opacity: '1' },
-              },
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-15px)' },
-              },
-              shimmer: {
-                '0%': { left: '-100%', opacity: '0' },
-                '10%': { opacity: '0.3' },
-                '50%': { left: '200%', opacity: '0' },
-                '100%': { left: '200%', opacity: '0' },
-              },
-              breathe: {
-                '0%, 100%': { transform: 'scale(1)' },
-                '50%': { transform: 'scale(1.03)' },
-              }
+              wiggle: { '0%, 100%': { transform: 'rotate(-3deg)' }, '50%': { transform: 'rotate(3deg)' } },
+              pop: { '0%': { transform: 'scale(0.5)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+              float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
+              shimmer: { '0%': { left: '-100%', opacity: '0' }, '10%': { opacity: '0.3' }, '50%': { left: '200%', opacity: '0' }, '100%': { left: '200%', opacity: '0' } },
             },
             boxShadow: {
               'toy': '0 6px 0 rgba(0,0,0,0.15)',
@@ -109,8 +55,6 @@
               'toy-lg': '0 10px 0 rgba(0,0,0,0.15)',
               'toy-xl': '0 14px 0 rgba(0,0,0,0.15)',
               'card': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
-              'glow': '0 0 20px rgba(255, 255, 255, 0.6)',
-              'inner-light': 'inset 0 4px 6px rgba(255,255,255,0.4)',
             }
           }
         }
@@ -119,41 +63,32 @@
     <style>
       ::-webkit-scrollbar { display: none; }
       body {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        user-select: none;
-        overflow: hidden;
+        margin: 0; padding: 0;
         background-color: #FFCC00;
         font-family: 'Fredoka', sans-serif;
-        margin: 0;
-        padding: 0;
+        overflow: hidden;
       }
       #root { width: 100%; height: 100dvh; }
-      /* Fail-safe loading indicator */
       #root:empty::after {
-        content: 'Building LEGO Adventure...';
-        position: absolute;
-        top: 50%;
-        left: 50%;
+        content: 'Loading LEGO Adventure...';
+        position: absolute; top: 50%; left: 50%;
         transform: translate(-50%, -50%);
-        font-weight: bold;
-        color: #D11013;
+        font-weight: bold; color: #D11013;
+        font-size: 1.5rem;
       }
     </style>
   <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.3",
-    "react-dom": "https://esm.sh/react-dom@^19.2.3",
-    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
     "framer-motion": "https://esm.sh/framer-motion@^12.25.0",
     "canvas-confetti": "https://esm.sh/canvas-confetti@^1.9.4",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
     "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
@@ -161,6 +96,7 @@
 </head>
   <body>
     <div id="root"></div>
+    <!-- Point to the local TSX file; Vite will handle the transformation -->
     <script type="module" src="./index.tsx"></script>
   <script type="module" src="/index.tsx"></script>
 </body>

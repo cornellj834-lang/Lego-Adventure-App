@@ -5,9 +5,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
-    target: 'esnext'
-  },
-  server: {
-    port: 3000
+    rollupOptions: {
+      input: {
+        main: './index.html'
+      }
+    }
   }
 });
