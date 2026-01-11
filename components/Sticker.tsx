@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { IconHelper } from './IconHelper';
+import { IconHelper } from './IconHelper.tsx';
 
 interface StickerProps {
   iconName: string;

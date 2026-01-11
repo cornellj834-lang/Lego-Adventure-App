@@ -1,4 +1,4 @@
-import { WorldType, World, Mission } from './types';
+import { WorldType, World, Mission } from './types.ts';
 
 export const WORLDS: World[] = [
   {

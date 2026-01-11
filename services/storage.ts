@@ -1,4 +1,4 @@
-import { UserState, UserLevel } from '../types';
+import { UserState, UserLevel } from '../types.ts';
 
 const STORAGE_KEY = 'lego_adventure_save_v3';
 

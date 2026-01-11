@@ -1,5 +1,10 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
+// Ensure process.env is accessible even in browser environments without a bundler
+if (typeof (window as any).process === 'undefined') {
+  (window as any).process = { env: {} };
+}
+
 const CACHE_NAME = 'lego-tts-v8-puck'; // Incremented cache version
 
 let audioContext: AudioContext | null = null;
@@ -149,9 +154,8 @@ async function getAudioData(text: string, isPreload = false): Promise<Uint8Array
     }
 
     // 3. Fetch from API
-    // Initialize AI strictly using the environment variable right before use
     try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
         const fetchPromise = (async () => {
             try {
                 const response = await ai.models.generateContent({
