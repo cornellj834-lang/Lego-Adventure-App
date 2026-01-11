@@ -1,7 +1,15 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
-// Cache versioning for robust updates
-const CACHE_NAME = 'lego-tts-v9-puck'; 
+// Ensure process.env.API_KEY is retrieved safely
+const getApiKey = () => {
+  try {
+    return (window as any).process?.env?.API_KEY || "";
+  } catch (e) {
+    return "";
+  }
+};
+
+const CACHE_NAME = 'lego-tts-v10-puck'; 
 
 let audioContext: AudioContext | null = null;
 let currentSource: AudioBufferSourceNode | null = null;
@@ -34,7 +42,7 @@ function decode(base64: string): Uint8Array {
     }
     return bytes;
   } catch (e) {
-    console.error("Base64 decode failed", e);
+    console.error("LEGO: Base64 decode failed", e);
     return new Uint8Array(0);
   }
 }
@@ -91,22 +99,19 @@ const speakTextFallback = (text: string, rate: number = 0.9): Promise<void> => {
           resolve();
           return;
       }
-
       const utterance = new SpeechSynthesisUtterance(text);
       const voices = window.speechSynthesis.getVoices();
       const preferredVoice = voices.find(v => v.lang.startsWith('en-US'));
-
       if (preferredVoice) utterance.voice = preferredVoice;
       utterance.rate = rate; 
       utterance.onend = () => resolve();
       utterance.onerror = () => resolve();
-
       window.speechSynthesis.speak(utterance);
   });
 };
 
 const getCacheKey = (text: string) => {
-    return `https://tts-cache.local/v9/${encodeURIComponent(text.slice(0, 32))}-${text.length}`;
+    return `https://tts-cache.local/v10/${encodeURIComponent(text.slice(0, 32))}-${text.length}`;
 };
 
 async function getAudioData(text: string): Promise<Uint8Array | null> {
@@ -120,16 +125,15 @@ async function getAudioData(text: string): Promise<Uint8Array | null> {
                 const blob = await response.blob();
                 return new Uint8Array(await blob.arrayBuffer());
             }
-        } catch(e) { console.warn("Cache read failed", e); }
+        } catch(e) { console.warn("LEGO: Cache read failed", e); }
     }
 
     if (pendingFetches.has(cacheKey)) return pendingFetches.get(cacheKey)!;
     if (isRateLimited) return null;
 
     try {
-        const apiKey = (window as any).process?.env?.API_KEY || "";
+        const apiKey = getApiKey();
         if (!apiKey) {
-          console.warn("API_KEY missing - using fallback TTS");
           return null;
         }
 
@@ -219,7 +223,7 @@ export const playAudio = async (key: string, text: string, rate: number = 1.0): 
              };
              return;
          }
-      } catch (e) { console.error("Playback failed", e); }
+      } catch (e) { console.error("LEGO: Playback failed", e); }
 
       if (currentPlaybackId === myPlaybackId) {
           await speakTextFallback(text, rate);
