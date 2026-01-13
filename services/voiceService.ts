@@ -3,7 +3,9 @@ import { GoogleGenAI, Modality } from "@google/genai";
 // Ensure process.env.API_KEY is retrieved safely
 const getApiKey = () => {
   try {
-    return (window as any).process?.env?.API_KEY || "";
+    // The bundler will replace process.env.API_KEY with the actual string if configured,
+    // or we fall back to checking the window object if manually shimmed.
+    return process.env.API_KEY || (window as any).process?.env?.API_KEY || "";
   } catch (e) {
     return "";
   }
